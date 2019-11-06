@@ -1,0 +1,1 @@
+Ce compilateur a été écrit avec Pierre Godfard, dans le cadre du cours de compilation de l'ENS. Il compile du code Mini-Kotlin, une variante simplifiée de Kotlin conçue pour le cours. Un court rapport est présent dans le fichier minirapport.txt (comme son nom l'indique).

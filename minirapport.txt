@@ -1,0 +1,40 @@
+Mini-rapport de Félix Breton et Pierre Godfard
+
+Remarques sur les fichiers :
+ - astprinter.ml affiche les arbres de syntaxes abstraites,
+   il a été utilisé pour débogger le parser
+ - les fichier x86_64.mli et x86_64.ml ont été pris dans le code du deuxième TD
+ - le code du fichier main.ml est très inspiré des TP
+
+Lexer :
+ - le parser est dans lexer.mll
+ - les string sont traitées lors de la production de code (pour "\n","\\",...)
+
+Parser :
+ - le parser est dans parser.mly
+ - les arbres en sortie sont définis dans ast.mli
+ - les conflits ont été résolus
+
+Typeur :
+ - le typeur est dans typer.ml
+ - les arbres en sortie sont definis dans typetree.mli
+ - chaque fonction de la forme t* où * est un type de code (fichier,decl,expression,etc...) :
+	-prend en entrée un environnement et un morceau de code 
+	-renvoie le type du bloc de code (sauf dans les cas où ce type est nécéssairement unit), l'environnement après son typage et l'arbre de types correspondant
+ - l'environnement est une map qui associe à chaque nom de variable son type, sa mutabilité et sa portée
+ - des informations en plus, comme la portée actuelle, le type actuel des variables polymorphes et un booléen indiquant si le bloc de code passe nécessairement par un return sont aussi stockées dans l'environnement
+
+Production de code :
+ - la première phase est dans TtoA.ml
+ - les arbres en sortie sont définis dans atree.mli
+ - cette phase assigne des emplacements mémoires chaque variables
+   et prépare les fonctions de première classe et la gestion des classes
+ - la deuxième phase est dans AtoAsm.ml
+ - cette phase produit le code assembleur
+ - choix techniques :
+    - toute valeur calculée est mise dans %rax
+    - tous les calculs intermédiaires sont sur mis sur la pile
+    - tous les paramètres sont mis sur la pile
+    - l'environnement/l'objet est le dernier argument
+    - l'évaluation des relations binaires se fait à gauche puis à droite
+      sauf pour && et ||
